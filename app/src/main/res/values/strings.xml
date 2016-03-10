@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PDV</string>
+    <string name="action_new_product">Novo Produto</string>
+    <string name="action_edit_product">Editar Produto</string>
+    <string name="title_activity_product_new">Novo Produto</string>
+    <string name="title_activity_product_edit">Editar Produto</string>
+    <string name="product_new_description">Descrição</string>
+    <string name="product_new_unit">Unidade</string>
+    <string name="product_new_price">Preço</string>
+    <string name="product_new_barcode">Código de Barras</string>
+</resources>
