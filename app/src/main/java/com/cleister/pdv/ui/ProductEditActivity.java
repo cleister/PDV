@@ -183,7 +183,8 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
 
                 product.save();
 
-                Snackbar.make(view, "Produto alterado com sucesso!", Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(view, "Produto alterado com sucesso!", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(view, getResources().getString(R.string.snackbar_success_edit_product), Snackbar.LENGTH_SHORT).show();
             }
         });
     }

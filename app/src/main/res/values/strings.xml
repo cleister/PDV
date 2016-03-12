@@ -8,4 +8,6 @@
     <string name="product_new_unit">Unidade</string>
     <string name="product_new_price">Preço</string>
     <string name="product_new_barcode">Código de Barras</string>
+    <string name="snackbar_success_edit_product">Produto alterado com sucesso!</string>
+    <string name="toast_main_activity_prodcut_null">Produdo não localizado.</string>
 </resources>
