@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cleister.pdv.R;
 import com.cleister.pdv.domain.model.ProductItem;
+import com.cleister.pdv.domain.util.Base64Util;
+
 import java.util.List;
 
 
@@ -31,9 +34,13 @@ public class CustomArrayAdapter extends ArrayAdapter<ProductItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = inflater.inflate(layout, parent, false);
         TextView tv = (TextView)v.findViewById(R.id.item_label);
-        //ImageView foto = (ImageView)v.findViewById(R.id.foto);
-        //foto.setImageBitmap(Base64Util.decodeBase64(getItem(position).getPhoto()));
-        tv.setText(getItem(position).getDescription() + " " + getItem(position).getQuantity());
+
+        ImageView foto = (ImageView)v.findViewById(R.id.productPhoto);
+        foto.setImageBitmap(Base64Util.decodeBase64(getItem(position).getPhoto()));
+
+        tv.setText(getItem(position).getDescription() + " - " + getItem(position).getUnit() +
+                "\n Qtd: " + getItem(position).getQuantity());
+
         return v;
     }
 }

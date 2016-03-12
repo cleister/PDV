@@ -22,6 +22,7 @@ import com.cleister.pdv.domain.adapter.CustomArrayAdapter;
 import com.cleister.pdv.domain.model.Item;
 import com.cleister.pdv.domain.model.Product;
 import com.cleister.pdv.domain.model.ProductItem;
+import com.cleister.pdv.domain.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,6 @@ public class MainActivity extends BasicActivity {
             public void onClick(View view) {
 
                 IntentIntegrator.initiateScan(MainActivity.this, zxingLibConfig);
-
             }
         });
 
@@ -78,7 +78,7 @@ public class MainActivity extends BasicActivity {
                 openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
                         0xCE)));
                 // set item width
-                openItem.setWidth(90);
+                openItem.setWidth(Util.convertPixelsToDp(190.0f, MainActivity.this));
                 // set item title
                 openItem.setTitle("Open");
                 // set item title fontsize
@@ -95,7 +95,8 @@ public class MainActivity extends BasicActivity {
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
                         0x3F, 0x25)));
                 // set item width
-                deleteItem.setWidth(90);
+                deleteItem.setWidth(Util.convertPixelsToDp(190.0f, MainActivity.this));
+
                 // set a icon
                 deleteItem.setIcon(R.drawable.ic_remove_shopping_cart_white_36dp);
                 // add to menu
@@ -121,6 +122,8 @@ public class MainActivity extends BasicActivity {
                 return false;
             }
         });
+
+        pupulateList();
     }
 
     @Override
@@ -202,7 +205,7 @@ public class MainActivity extends BasicActivity {
 
                         item.save();
 
-                        popularLista();
+                        pupulateList();
 
                     } else {
                         Toast.makeText(MainActivity.this, getString(R.string.toast_main_activity_prodcut_null), Toast.LENGTH_SHORT).show();
@@ -214,7 +217,7 @@ public class MainActivity extends BasicActivity {
         }
     }
 
-    public void popularLista(){
+    public void pupulateList(){
         List<Item> listaItem = Query.many(Item.class, "select * from item where id_buy = ? order by id", 1).get().asList();
 
         Log.d("TAMANHOLISTA",""+ listaItem.size());
@@ -234,6 +237,7 @@ public class MainActivity extends BasicActivity {
             productItem.setIdItem(item.getId());
             productItem.setPhoto(product.getPhoto());
             productItem.setDescription(product.getDescription());
+            productItem.setUnit(product.getUnit());
             productItem.setQuantity(item.getQuantity());
             productItem.setPrice(product.getPrice());
 
@@ -242,7 +246,7 @@ public class MainActivity extends BasicActivity {
             totalValue += item.getQuantity() * product.getPrice();
             quantityItems += item.getQuantity();
         }
-        getSupportActionBar().setTitle("PDV " + totalValue);
+        getSupportActionBar().setTitle("PDV " + Util.getFormatedCurrency(String.valueOf(totalValue)));
         adapter = new CustomArrayAdapter(this, R.layout.list_item, list);
         listView.setAdapter(adapter);
     }
