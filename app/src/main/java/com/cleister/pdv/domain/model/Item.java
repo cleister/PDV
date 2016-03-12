@@ -1,6 +1,7 @@
 package com.cleister.pdv.domain.model;
 
 import se.emilsjolander.sprinkles.Model;
+import se.emilsjolander.sprinkles.Query;
 import se.emilsjolander.sprinkles.annotations.AutoIncrement;
 import se.emilsjolander.sprinkles.annotations.Column;
 import se.emilsjolander.sprinkles.annotations.Key;
@@ -25,6 +26,12 @@ public class Item extends Model {
 
     @Column("quantity")
     private int quantity;
+
+    public static Item GetSingleItemFromId(long id){
+        Item item;// = new Product();
+        item = Query.one(Item.class,"select * from item where id = ?", id).get();
+        return item;
+    }
 
     public long getId() {
         return id;
