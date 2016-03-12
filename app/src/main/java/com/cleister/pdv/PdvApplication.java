@@ -32,7 +32,9 @@ public class PdvApplication extends Application {
                                 "unit TEXT,"+
                                 "price REAL,"+
                                 "barcode TEXT,"+
-                                "photo TEXT"+
+                                "photo TEXT,"+
+                                "latitude REAL,"+
+                                "longitude REAL"+
                                 ")"
                 );
             }

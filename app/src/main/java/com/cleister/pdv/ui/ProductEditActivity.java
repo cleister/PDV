@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAssignedNumbers;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +25,10 @@ import com.cleister.pdv.R;
 import com.cleister.pdv.domain.model.Product;
 import com.cleister.pdv.domain.util.Base64Util;
 import com.cleister.pdv.domain.util.ImageInputHelper;
+import com.mapzen.android.lost.api.LocationListener;
+import com.mapzen.android.lost.api.LocationRequest;
+import com.mapzen.android.lost.api.LocationServices;
+import com.mapzen.android.lost.api.LostApiClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,8 +68,9 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
     ImageButton imageButtonCamera;
 
     private ImageInputHelper imageInputHelper;
-
     private Product product;
+    private double latitude = 0.0d;
+    private double longitude = 0.0d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,37 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
         setContentView(R.layout.activity_product_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        LostApiClient lostApiClient = new LostApiClient.Builder(this).build();
+        lostApiClient.connect();
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation();
+        if (location != null) {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+
+            Log.d("LOCATION","Latitude -> " + latitude);
+            Log.d("LOCATION","Longitude -> " + longitude);
+        }
+
+//        LocationRequest request = LocationRequest.create()
+//                .setInterval(5000)
+//                .setSmallestDisplacement(10)
+//                .setPriority(LocationRequest.PRIORITY_LOW_POWER);
+//
+//        LocationListener listener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                longitude = location.getLongitude();
+//                latitude = location.getLatitude();
+//            }
+//        };
+//
+//        LocationServices.FusedLocationApi.requestLocationUpdates(request, listener);
+//
+//        Log.d("LOCATION","Latitude -> " + latitude);
+//        Log.d("LOCATION","Longitude -> " + longitude);
+
 
         imageInputHelper = new ImageInputHelper(this);
         imageInputHelper.setImageActionListener(this);
@@ -141,11 +178,12 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
 
                 product.setPhoto(Base64Util.encodeTobase64(image));
 
+                product.setLatitude(latitude);
+                product.setLongitude(longitude);
+
                 product.save();
 
                 Snackbar.make(view, "Produto alterado com sucesso!", Snackbar.LENGTH_SHORT).show();
-
-                //finish();
             }
         });
     }

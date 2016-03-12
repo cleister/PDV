@@ -3,6 +3,7 @@ package com.cleister.pdv.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,6 +21,8 @@ import com.cleister.pdv.R;
 import com.cleister.pdv.domain.model.Product;
 import com.cleister.pdv.domain.util.Base64Util;
 import com.cleister.pdv.domain.util.ImageInputHelper;
+import com.mapzen.android.lost.api.LocationServices;
+import com.mapzen.android.lost.api.LostApiClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +56,9 @@ public class ProductNewActivity extends BasicActivity implements ImageInputHelpe
     private ImageInputHelper imageInputHelper;
     private Product product;
 
+    private double latitude = 0.0d;
+    private double longitude = 0.0d;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,18 @@ public class ProductNewActivity extends BasicActivity implements ImageInputHelpe
         setContentView(R.layout.activity_product_new);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        LostApiClient lostApiClient = new LostApiClient.Builder(this).build();
+        lostApiClient.connect();
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation();
+        if (location != null) {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+
+            Log.d("LOCATION","Latitude -> " + latitude);
+            Log.d("LOCATION","Longitude -> " + longitude);
+        }
 
         imageInputHelper = new ImageInputHelper(this);
         imageInputHelper.setImageActionListener(this);
@@ -86,9 +104,12 @@ public class ProductNewActivity extends BasicActivity implements ImageInputHelpe
 
                 product.setBarcode(editTextBarcode.getText().toString());
 
-                Bitmap imagem = ((BitmapDrawable)imageViewProduct.getDrawable()).getBitmap();
+                Bitmap image = ((BitmapDrawable)imageViewProduct.getDrawable()).getBitmap();
 
-                product.setPhoto(Base64Util.encodeTobase64(imagem));
+                product.setPhoto(Base64Util.encodeTobase64(image));
+
+                product.setLatitude(latitude);
+                product.setLongitude(longitude);
 
                 product.save();
                 finish();

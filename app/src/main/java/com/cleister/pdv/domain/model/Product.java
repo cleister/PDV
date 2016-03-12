@@ -33,16 +33,18 @@ public class Product extends Model {
     @Column("photo")
     private String photo;
 
+    @Column("latitude")
+    private double latitude;
+
+    @Column("longitude")
+    private double longitude;
+
     public static String OrderBy(String column){
         return "select * from product order by " + column;
     }
 
-//    public static String GetSingleFromBarcodeProduct(String column){
-//        return "select * from product where barcode = '" + column + "'";
-//    }
-
     public static Product GetSingleFromBarcodeProduct(String value){
-        Product product = new Product();
+        Product product;// = new Product();
         product = Query.one(Product.class, "select * from product where barcode = ?", value).get();
         return product;
     }
@@ -93,5 +95,21 @@ public class Product extends Model {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
