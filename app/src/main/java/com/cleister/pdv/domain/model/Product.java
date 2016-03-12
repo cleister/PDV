@@ -1,6 +1,7 @@
 package com.cleister.pdv.domain.model;
 
 import se.emilsjolander.sprinkles.Model;
+import se.emilsjolander.sprinkles.Query;
 import se.emilsjolander.sprinkles.annotations.AutoIncrement;
 import se.emilsjolander.sprinkles.annotations.Column;
 import se.emilsjolander.sprinkles.annotations.Key;
@@ -31,6 +32,20 @@ public class Product extends Model {
 
     @Column("photo")
     private String photo;
+
+    public static String OrderBy(String column){
+        return "select * from product order by " + column;
+    }
+
+//    public static String GetSingleFromBarcodeProduct(String column){
+//        return "select * from product where barcode = '" + column + "'";
+//    }
+
+    public static Product GetSingleFromBarcodeProduct(String value){
+        Product product = new Product();
+        product = Query.one(Product.class, "select * from product where barcode = ?", value).get();
+        return product;
+    }
 
     public long getId() {
         return id;
