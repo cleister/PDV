@@ -1,5 +1,6 @@
 package com.cleister.pdv.domain.network;
 
+import com.cleister.pdv.domain.model.Compra;
 import com.cleister.pdv.domain.model.Product;
 
 import java.util.List;
@@ -7,9 +8,11 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
@@ -45,6 +48,13 @@ public class APIClient {
         @GET("/produto/todos")
         void getAllProdutos(
                 Callback<List<Product>> callbackProdutos
+        );
+
+        @Headers("Content-Type: application/json")
+        @POST("/compra/cadastro")
+        void enviarCompra(
+                @Body Compra compra,
+                Callback<String> callbackCompra
         );
 
         @FormUrlEncoded()

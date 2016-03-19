@@ -1,5 +1,7 @@
 package com.cleister.pdv.domain.model;
 
+import java.util.List;
+
 import se.emilsjolander.sprinkles.Model;
 import se.emilsjolander.sprinkles.Query;
 import se.emilsjolander.sprinkles.annotations.AutoIncrement;
@@ -19,7 +21,7 @@ public class Item extends Model {
     private long id;
 
     @Column("id_buy")
-    private long idBuy;
+    private String idBuy;
 
     @Column("id_product")
     private String idProduct;
@@ -33,6 +35,14 @@ public class Item extends Model {
         return item;
     }
 
+    public static void ClearAll(){
+        List<Item> items = Query.all(Item.class).get().asList();
+
+        for (Item item:items){
+            item.delete();
+        }
+    }
+
     public long getId() {
         return id;
     }
@@ -41,11 +51,11 @@ public class Item extends Model {
         this.id = id;
     }
 
-    public long getIdBuy() {
+    public String getIdBuy() {
         return idBuy;
     }
 
-    public void setIdBuy(long idBuy) {
+    public void setIdBuy(String idBuy) {
         this.idBuy = idBuy;
     }
 

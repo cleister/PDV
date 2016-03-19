@@ -5,7 +5,7 @@ package com.cleister.pdv.domain.model;
  */
 public class ProductItem {
 
-    private long idBuy;
+    private String idBuy;
     private long idItem;
     private String photo;
     private String description;
@@ -13,11 +13,11 @@ public class ProductItem {
     private int quantity;
     private double price;
 
-    public long getIdBuy() {
+    public String getIdBuy() {
         return idBuy;
     }
 
-    public void setIdBuy(long idBuy) {
+    public void setIdBuy(String idBuy) {
         this.idBuy = idBuy;
     }
 

@@ -42,7 +42,7 @@ public class PdvApplication extends Application {
                 db.execSQL(
                         "CREATE TABLE item (" +
                                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                                "id_buy INTEGER,"+
+                                "id_buy TEXT,"+
                                 "id_product TEXT,"+
                                 "quantity INTEGER"+
                                 ")"
