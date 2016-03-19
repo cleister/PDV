@@ -34,7 +34,8 @@ public class PdvApplication extends Application {
                                 "barcode TEXT,"+
                                 "photo TEXT,"+
                                 "latitude REAL,"+
-                                "longitude REAL"+
+                                "longitude REAL,"+
+                                "status INTEGER"+
                                 ")"
                 );
 

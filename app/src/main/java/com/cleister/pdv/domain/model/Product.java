@@ -1,5 +1,7 @@
 package com.cleister.pdv.domain.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import se.emilsjolander.sprinkles.Model;
 import se.emilsjolander.sprinkles.Query;
 import se.emilsjolander.sprinkles.annotations.AutoIncrement;
@@ -19,25 +21,36 @@ public class Product extends Model {
     private long id;
 
     @Column("description")
+    @SerializedName("descricao")
     private String description;
 
     @Column("unit")
+    @SerializedName("unidade")
     private String unit;
 
     @Column("price")
+    @SerializedName("preco")
     private double price;
 
     @Column("barcode")
+    @SerializedName("codigoBarras")
     private String barcode;
 
     @Column("photo")
+    @SerializedName("foto")
     private String photo;
 
     @Column("latitude")
+    @SerializedName("latitude")
     private double latitude;
 
     @Column("longitude")
+    @SerializedName("longitude")
     private double longitude;
+
+    @Column("status")
+    @SerializedName("ativo")
+    private int status;
 
     public static String OrderBy(String column){
         return "select * from product order by " + column;
@@ -111,5 +124,13 @@ public class Product extends Model {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

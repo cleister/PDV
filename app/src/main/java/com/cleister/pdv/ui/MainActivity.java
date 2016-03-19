@@ -1,5 +1,6 @@
 package com.cleister.pdv.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,15 +23,20 @@ import com.cleister.pdv.domain.adapter.CustomArrayAdapter;
 import com.cleister.pdv.domain.model.Item;
 import com.cleister.pdv.domain.model.Product;
 import com.cleister.pdv.domain.model.ProductItem;
+import com.cleister.pdv.domain.network.APIClient;
 import com.cleister.pdv.domain.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import dmax.dialog.SpotsDialog;
 import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
 import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
 import jim.h.common.android.lib.zxing.integrator.IntentResult;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import se.emilsjolander.sprinkles.CursorList;
 import se.emilsjolander.sprinkles.Query;
 
@@ -43,6 +49,11 @@ public class MainActivity extends BasicActivity {
     private double totalValue;
 
     private CustomArrayAdapter adapter;
+
+    private Callback<List<Product>> callbackProdutos;
+
+    private AlertDialog dialog;
+
 
     @Bind(R.id.listView)
     SwipeMenuListView listView;
@@ -57,6 +68,9 @@ public class MainActivity extends BasicActivity {
         zxingLibConfig = new ZXingLibConfig();
         zxingLibConfig.useFrontLight = true;
 
+        configureProdutoCallback();
+
+        dialog = new SpotsDialog(this, "Carregando...");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +194,11 @@ public class MainActivity extends BasicActivity {
             Intent intentProductEdit = new Intent(MainActivity.this, ProductEditActivity.class);
             startActivity(intentProductEdit);
         }
+        else if(id == R.id.action_sycronize_product)
+        {
+            dialog.show();
+            new APIClient().getRestService().getAllProdutos(callbackProdutos);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -257,5 +276,34 @@ public class MainActivity extends BasicActivity {
         getSupportActionBar().setTitle("PDV " + Util.getFormatedCurrency(String.valueOf(totalValue)));
         adapter = new CustomArrayAdapter(this, R.layout.list_item, list);
         listView.setAdapter(adapter);
+    }
+
+    private void configureProdutoCallback() {
+
+        callbackProdutos = new Callback<List<Product>>() {
+
+            @Override public void success(List<Product> resultado, Response response) {
+
+                List<Product> lp = Query.all(Product.class).get().asList();
+
+                for(Product p:lp){
+                    p.delete();
+                }
+
+                for(Product product:resultado){
+                    product.setId(0L);
+                    product.save();
+                }
+
+                dialog.dismiss();
+            }
+
+            @Override public void failure(RetrofitError error) {
+
+                dialog.dismiss();
+
+                Log.e("RETROFIT", "Error:"+error.getMessage());
+            }
+        };
     }
 }
