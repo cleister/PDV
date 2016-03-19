@@ -1,5 +1,6 @@
 package com.cleister.pdv.ui;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAssignedNumbers;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 
 import com.cleister.pdv.R;
 import com.cleister.pdv.domain.model.Product;
+import com.cleister.pdv.domain.network.APIClient;
 import com.cleister.pdv.domain.util.Base64Util;
 import com.cleister.pdv.domain.util.ImageInputHelper;
 import com.mapzen.android.lost.api.LocationListener;
@@ -37,6 +39,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import se.emilsjolander.sprinkles.Query;
 import se.emilsjolander.sprinkles.typeserializers.BitmapSerializer;
 import se.emilsjolander.sprinkles.typeserializers.StringSerializer;
@@ -72,12 +78,20 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
     private double latitude = 0.0d;
     private double longitude = 0.0d;
 
+    Callback<String> callbackEditProduct;
+
+    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        configureNewProductCallback();
+
+        dialog = new SpotsDialog(this, "Enviando para o servidor");
 
         LostApiClient lostApiClient = new LostApiClient.Builder(this).build();
         lostApiClient.connect();
@@ -183,6 +197,10 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
 
                 product.save();
 
+                dialog.show();
+
+                new APIClient().getRestService().updateProduto(product.getBarcode(), product.getDescription(), product.getUnit(), product.getPrice(), product.getPhoto(), product.getStatus(), product.getLatitude(), product.getLongitude(), callbackEditProduct);
+
                 //Snackbar.make(view, "Produto alterado com sucesso!", Snackbar.LENGTH_SHORT).show();
                 Snackbar.make(view, getResources().getString(R.string.snackbar_success_edit_product), Snackbar.LENGTH_SHORT).show();
             }
@@ -234,4 +252,24 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
         }
     }
 
+    private void configureNewProductCallback() {
+
+        callbackEditProduct = new Callback<String>() {
+
+            @Override public void success(String resultado, Response response) {
+
+                dialog.dismiss();
+                finish();
+            }
+
+            @Override public void failure(RetrofitError error) {
+
+                dialog.dismiss();
+
+                Snackbar.make(findViewById(android.R.id.content).getRootView(), "Houve um problema de conexão! Por favor, verifique e tente novamente.", Snackbar.LENGTH_SHORT).show();
+
+                Log.e("RETROFIT", "Error:" + error.getMessage());
+            }
+        };
+    }
 }
