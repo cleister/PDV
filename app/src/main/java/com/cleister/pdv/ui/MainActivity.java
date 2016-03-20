@@ -153,14 +153,12 @@ public class MainActivity extends BasicActivity {
 
                 switch (index) {
                     case 0:
-                        //Toast.makeText(getApplicationContext(), "Action 1 for " + itemProduto.getDescricao(), Toast.LENGTH_SHORT).show();
                         item.setQuantity(item.getQuantity() + 1);
                         item.save();
                         list.clear();
                         pupulateList();
                         break;
                     case 1:
-                        //Toast.makeText(getApplicationContext(), "Action 2 for " + itemProduto.getDescricao(), Toast.LENGTH_SHORT).show();
                         item.delete();
                         list.clear();
                         pupulateList();
@@ -247,9 +245,9 @@ public class MainActivity extends BasicActivity {
             compra.setItens(items);
 
             MaterialStyledDialog dialog = new MaterialStyledDialog(this)
-                    .setTitle("Fechar Compra?")
-                    .setDescription("Quantidade de volumes: "+quantityItems+" - Total: R$ "+priceTotal)
-                    .setPositive("Sim", new MaterialDialog.SingleButtonCallback() {
+                    .setTitle(getString(R.string.action_close_compra))
+                    .setDescription(String.format(getString(R.string.action_resume_compra), quantityItems, Util.getFormatedCurrency(String.valueOf(priceTotal))))//       "Quantidade de volumes: "+quantityItems+" - Total: R$ "+priceTotal)
+                    .setPositive(getString(R.string.action_yes), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog dialog, DialogAction which) {
 
@@ -259,7 +257,7 @@ public class MainActivity extends BasicActivity {
                             Log.d("MaterialStyledDialogs", "Do something!");
                         }
                     })
-                    .setNegative("Não", new MaterialDialog.SingleButtonCallback() {
+                    .setNegative(getString(R.string.action_no), new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog dialog, DialogAction which) {
 
@@ -318,7 +316,8 @@ public class MainActivity extends BasicActivity {
     }
 
     public void pupulateList(){
-        List<Item> listaItem = Query.many(Item.class, "select * from item where id_buy = ? order by id", idBuy).get().asList();
+        List<Item> listaItem = Item.getAllFromIdCompra(idBuy);
+        //List<Item> listaItem = Query.many(Item.class, "select * from item where id_buy = ? order by id", idBuy).get().asList();
 
         Log.d("TAMANHOLISTA",""+ listaItem.size());
 
@@ -375,7 +374,7 @@ public class MainActivity extends BasicActivity {
 
                 dialog.dismiss();
 
-                Log.e("RETROFIT", "Error:"+error.getMessage());
+                Log.e("RETROFIT", "Error: " + error.getMessage());
             }
         };
     }
@@ -404,7 +403,7 @@ public class MainActivity extends BasicActivity {
 
                 dialog.dismiss();
 
-                Log.e("RETROFIT", "Error:"+error.getMessage());
+                Log.e("RETROFIT", "Error: " + error.getMessage());
             }
         };
     }

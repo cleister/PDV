@@ -13,12 +13,15 @@ public class Compra {
     public Carrinho getCarrinho() {
         return carrinho;
     }
+
     public void setCarrinho(Carrinho carrinho) {
         this.carrinho = carrinho;
     }
+
     public List<Item> getItens() {
         return itens;
     }
+
     public void setItens(List<Item> itens) {
         this.itens = itens;
     }

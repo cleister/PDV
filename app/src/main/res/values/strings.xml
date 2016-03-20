@@ -1,15 +1,19 @@
 <resources>
     <string name="app_name">PDV</string>
-    <string name="action_new_product">Novo Produto</string>
-    <string name="action_edit_product">Editar Produto</string>
-    <string name="title_activity_product_new">Novo Produto</string>
-    <string name="title_activity_product_edit">Editar Produto</string>
-    <string name="product_new_description">Descrição</string>
-    <string name="product_new_unit">Unidade</string>
-    <string name="product_new_price">Preço</string>
-    <string name="product_new_barcode">Código de Barras</string>
-    <string name="snackbar_success_edit_product">Produto alterado com sucesso!</string>
-    <string name="toast_main_activity_prodcut_null">Produdo não localizado.</string>
-    <string name="action_sycronize_product">Sincronizar Produtos</string>
-    <string name="action_close_compra">Fechar a compra</string>
+    <string name="action_new_product">New Product</string>
+    <string name="action_edit_product">Edit Product</string>
+    <string name="title_activity_product_new">New Product</string>
+    <string name="title_activity_product_edit">Edit Product</string>
+    <string name="product_new_description">Description</string>
+    <string name="product_new_unit">Unit</string>
+    <string name="product_new_price">Price</string>
+    <string name="product_new_barcode">Barcode</string>
+    <string name="snackbar_success_edit_product">Success update product!</string>
+    <string name="toast_main_activity_prodcut_null">Product not found.</string>
+    <string name="action_sycronize_product">Syncronize Products</string>
+    <string name="action_close_compra">Close Purchase</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+    <string name="action_resume_compra">Volume Quantity: %1$d - Total: %2$s</string>
+    <string name="send_to_server">Sendind to Server</string>
 </resources>

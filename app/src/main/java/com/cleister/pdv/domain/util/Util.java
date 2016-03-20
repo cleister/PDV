@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.DisplayMetrics;
 
+import com.cleister.pdv.R;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -77,6 +79,7 @@ public class Util {
             return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
         } catch (Exception exception) {
             serial = "pdv"; // TODO put some default value here.
+            //serial = Resources.getSystem().getString(R.string.app_name); // TODO put some default value here.
         }
 
         return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();

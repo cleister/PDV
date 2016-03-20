@@ -52,10 +52,12 @@ public class Product extends Model {
     @SerializedName("ativo")
     private int status;
 
+    // Retorna uma query que traz todos os produtos ordenado por uma coluna especifica
     public static String OrderBy(String column){
         return "select * from product order by " + column;
     }
 
+    // Retorna um produto através do código de barras
     public static Product GetSingleFromBarcodeProduct(String value){
         Product product;// = new Product();
         product = Query.one(Product.class, "select * from product where barcode = ?", value).get();

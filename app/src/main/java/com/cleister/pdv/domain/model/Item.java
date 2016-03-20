@@ -29,18 +29,26 @@ public class Item extends Model {
     @Column("quantity")
     private int quantity;
 
+    // Pega um item através do ID
     public static Item GetSingleItemFromId(long id){
         Item item;// = new Product();
         item = Query.one(Item.class,"select * from item where id = ?", id).get();
         return item;
     }
 
+    // Recebe todos produtos do banco local e os remove
     public static void ClearAll(){
         List<Item> items = Query.all(Item.class).get().asList();
 
         for (Item item:items){
             item.delete();
         }
+    }
+
+    public static List<Item> getAllFromIdCompra(String idBuy)
+    {
+        List<Item> listItem = Query.many(Item.class, "select * from item where id_buy = ? order by id", idBuy).get().asList();
+        return listItem;
     }
 
     public long getId() {

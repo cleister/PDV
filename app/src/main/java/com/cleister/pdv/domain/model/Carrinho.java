@@ -36,6 +36,7 @@ public class Carrinho implements Cloneable, Serializable {
     public String getIdCompra() {
         return this.idCompra;
     }
+
     public void setIdCompra(String idCompraIn) {
         this.idCompra = idCompraIn;
     }

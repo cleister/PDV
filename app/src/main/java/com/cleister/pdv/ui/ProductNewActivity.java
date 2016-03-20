@@ -8,8 +8,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.BinderThread;
-import android.support.annotation.StringDef;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +16,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.cleister.pdv.R;
 import com.cleister.pdv.domain.model.Product;
@@ -30,15 +27,16 @@ import com.mapzen.android.lost.api.LostApiClient;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
+import jim.h.common.android.lib.zxing.config.ZXingLibConfig;
+import jim.h.common.android.lib.zxing.integrator.IntentIntegrator;
+import jim.h.common.android.lib.zxing.integrator.IntentResult;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import se.emilsjolander.sprinkles.Query;
 
 public class ProductNewActivity extends BasicActivity implements ImageInputHelper.ImageActionListener {
 
@@ -73,6 +71,7 @@ public class ProductNewActivity extends BasicActivity implements ImageInputHelpe
 
     private AlertDialog dialog;
 
+    private ZXingLibConfig zxingLibConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +80,13 @@ public class ProductNewActivity extends BasicActivity implements ImageInputHelpe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Instance from zXingLib to barcode.
+        zxingLibConfig = new ZXingLibConfig();
+        zxingLibConfig.useFrontLight = true;
+
         configureNewProductCallback();
 
-        dialog = new SpotsDialog(this, "Enviando para o servidor");
+        dialog = new SpotsDialog(this, getString(R.string.send_to_server));
 
         LostApiClient lostApiClient = new LostApiClient.Builder(this).build();
         lostApiClient.connect();
@@ -152,10 +155,31 @@ public class ProductNewActivity extends BasicActivity implements ImageInputHelpe
         imageInputHelper.takePhotoWithCamera();
     }
 
+    @OnClick(R.id.imageButtonBarcode)
+    public  void onClickBarcode() {
+        IntentIntegrator.initiateScan(ProductNewActivity.this, zxingLibConfig);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         imageInputHelper.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case IntentIntegrator.REQUEST_CODE:
+                IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode,
+                        resultCode, data);
+
+                if (scanResult == null) {
+                    return;
+                }
+
+                String result = scanResult.getContents();
+                if (result != null) {
+                    editTextBarcode.setText(result);
+                }
+            break;
+        }
     }
 
     @Override
