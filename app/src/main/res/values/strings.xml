@@ -16,4 +16,6 @@
     <string name="action_no">No</string>
     <string name="action_resume_compra">Volume Quantity: %1$d - Total: %2$s</string>
     <string name="send_to_server">Sendind to Server</string>
+    <string name="map_products">Mapa Produtos</string>
+    <string name="accessToken">pk.eyJ1IjoiZWxjaW9hYnIiLCJhIjoiY2ltajQ2Z2t5MDBrY3V5a3VzY2p4anZ5ZiJ9.XaDTG9fCsHm5QEJ5GEtS1g</string>
 </resources>

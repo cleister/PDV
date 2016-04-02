@@ -79,18 +79,12 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
 
     private AlertDialog dialog;
 
-    private ZXingLibConfig zxingLibConfig;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Instance from zXingLib to barcode.
-        zxingLibConfig = new ZXingLibConfig();
-        zxingLibConfig.useFrontLight = true;
 
         configureNewProductCallback();
 
@@ -199,11 +193,6 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
         imageInputHelper.takePhotoWithCamera();
     }
 
-    @OnClick(R.id.imageButtonBarcode)
-    public  void onClickBarcode() {
-        IntentIntegrator.initiateScan(ProductEditActivity.this, zxingLibConfig);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -215,7 +204,7 @@ public class ProductEditActivity extends BasicActivity implements ImageInputHelp
                         resultCode, data);
 
                 if (scanResult == null) {
-                    return;
+                       return;
                 }
 
                 String result = scanResult.getContents();

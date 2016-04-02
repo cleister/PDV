@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -212,6 +213,11 @@ public class MainActivity extends BasicActivity {
         {
             Intent intentProductNew = new Intent(MainActivity.this, ProductNewActivity.class);
             startActivity(intentProductNew);
+        }
+        else if(id == R.id.action_map)
+        {
+            Intent intentActionMap = new Intent(MainActivity.this, MapActivity.class);
+            startActivity(intentActionMap);
         }
         else if(id == R.id.action_edit_product)
         {

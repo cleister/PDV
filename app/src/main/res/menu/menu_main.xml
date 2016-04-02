@@ -16,6 +16,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_map"
+        android:orderInCategory="100"
+        android:title="@string/map_products"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_sycronize_product"
         android:orderInCategory="100"
         android:title="@string/action_sycronize_product"
